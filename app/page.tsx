@@ -1,8 +1,30 @@
 "use client";
 import { useEffect, useState } from "react";
+import Profile from "./components/profile";
+import Playlist from "./components/playlist";
+import axios from "axios";
 
 export default function Home() {
   const [token, setToken] = useState("");
+  const [user, setUser] = useState<any>({});
+
+  const getUsersInfo = async () => {
+    const getToken = localStorage.getItem("access_token") || "";
+    try {
+      const { data } = await axios("https://api.spotify.com/v1/me", {
+        headers: {
+          Authorization: "Bearer " + getToken,
+        },
+      });
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUsersInfo();
+  }, []);
 
   useEffect(() => {
     // Extract token from URL fragment
@@ -45,12 +67,10 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <main className="bg-[#d2d2d2]">
       {!token && <button onClick={requestAuthorization}>Authorize</button>}
-      <button>
-        <a href="/profile">Profile</a>
-      </button>
-      <h1>Hello</h1>
+      <Profile user={user} />
+      <Playlist user={user} />
     </main>
   );
 }
