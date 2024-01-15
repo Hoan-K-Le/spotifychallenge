@@ -15,7 +15,7 @@ export default function Home() {
     }
   }, []);
 
-  const CLIENT_ID = "1cc19347d25c418abd5bb6a2da50b437";
+  const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID || "";
   const REDIRECT_URL = "http://localhost:3000";
 
   function generateRandomString(length: number): string {
@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <main>
-      <button onClick={requestAuthorization}>Authorize</button>
+      {!token && <button onClick={requestAuthorization}>Authorize</button>}
       <button>
         <a href="/profile">Profile</a>
       </button>
