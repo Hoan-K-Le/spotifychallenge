@@ -2,41 +2,35 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { ProfileProp } from "../profile/profile-interface";
+import { useAppSelector } from "@/app/store/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/store/store";
+import { getPlaylistData } from "@/app/store/PlaylistData";
 
 export default function Playlist({ user }: ProfileProp) {
-  const [playlists, setPlaylists] = useState([]);
-  const getUsersPlaylist = async () => {
-    if (!user.id) {
-      console.log("Can't find user id");
-      return;
-    }
-    try {
-      const { data } = await axios({
-        method: "GET",
-        url: `https://api.spotify.com/v1/me/playlists`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      console.log(data, "hello");
-      setPlaylists(data.items);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const playlist = useAppSelector(state => state.playlists.playlists);
+  const dispatch = useDispatch<AppDispatch>();
+  console.log(playlist, "13 playlist component");
   useEffect(() => {
-    getUsersPlaylist();
-  }, [user]);
+    dispatch(getPlaylistData());
+  }, [dispatch]);
 
   return (
-    <div>
-      <h2>Playlist</h2>
-      {playlists &&
-        playlists?.map((playlist: any) => (
-          <div>
-            <p>{playlist?.name}</p>
-          </div>
-        ))}
+    <div className="flex flex-col items-center">
+      <h1>Playlist</h1>
+      <div className="flex gap-4">
+        {playlist &&
+          playlist?.items?.map((playlist: any) => (
+            <div className="flex flex-col items-center">
+              <p>{playlist?.name}</p>
+              <img
+                src={playlist?.images[0].url}
+                alt="playlist-image"
+                className="h-[200px] w-[300px]"
+              />
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
