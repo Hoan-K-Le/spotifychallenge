@@ -28,6 +28,7 @@ export interface Image {
 export interface PlaylistItems {
   name: string;
   images: Image[];
+  id: string;
 }
 
 export interface PlaylistProps {

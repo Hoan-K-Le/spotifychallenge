@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Profile from "./components/profile";
-import Playlist from "./components/playlist";
+import Playlists from "./components/playlist";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { spotifyIcon } from "./components/svg";
@@ -86,7 +86,7 @@ export default function Home() {
       ) : (
         <div>
           <Profile />
-          <Playlist />
+          <Playlists />
         </div>
       )}
     </main>
