@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
 import playlistReducer from "./PlaylistData";
+import userReducer from "./ProfileData";
 
 export const store = configureStore({
   reducer: {
     playlists: playlistReducer,
+    user: userReducer,
   },
 });
 

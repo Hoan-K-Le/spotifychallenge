@@ -1,12 +1,19 @@
 "use client";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { ProfileProp } from "./profile-interface";
+import { useEffect } from "react";
+import { useAppSelector, AppDispatch } from "@/app/store/store";
+import { getUserData } from "@/app/store/ProfileData";
+import { useDispatch } from "react-redux";
 
-export default function Profile({ user }: ProfileProp) {
+export default function Profile() {
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useAppSelector(state => state.user.user);
+
+  useEffect(() => {
+    dispatch(getUserData());
+  }, []);
   return (
     <div>
-      <h1>Welcome {user?.display_name}</h1>
+      <h1 className="text-white">Welcome {user?.display_name}</h1>
     </div>
   );
 }

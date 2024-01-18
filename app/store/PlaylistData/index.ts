@@ -21,12 +21,25 @@ export const getPlaylistData = createAsyncThunk(
   }
 );
 
+export interface Image {
+  url: string;
+}
+
+export interface PlaylistItems {
+  name: string;
+  images: Image[];
+}
+
 export interface PlaylistProps {
-  playlists: { items: { name: string }[]; images: { url: string }[] };
+  playlists: {
+    items: PlaylistItems[];
+  };
 }
 
 const initialState: PlaylistProps = {
-  playlists: { items: [], images: [] },
+  playlists: {
+    items: [],
+  },
 };
 
 const playlistSlice = createSlice({

@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import Profile from "./components/profile";
 import Playlist from "./components/playlist";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { spotifyIcon } from "./components/svg";
 
 export default function Home() {
   const [token, setToken] = useState("");
   const [user, setUser] = useState<any>({});
-
+  const router = useRouter();
   const getUsersInfo = async () => {
     const getToken = localStorage.getItem("access_token") || "";
     try {
@@ -23,6 +25,9 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
     getUsersInfo();
   }, []);
 
@@ -67,10 +72,20 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-[#d2d2d2]">
-      {!token && <button onClick={requestAuthorization}>Authorize</button>}
-      <Profile user={user} />
-      <Playlist user={user} />
+    <main className="h-[100vh] flex flex-col items-center mt-10">
+      {!token ? (
+        <div className="flex flex-col items-center bg-[#111111] p-8 rounded">
+          <p>{spotifyIcon()}</p>
+          <button className="text-white" onClick={requestAuthorization}>
+            Log in to Spotify
+          </button>
+        </div>
+      ) : (
+        <div>
+          <Profile />
+          <Playlist />
+        </div>
+      )}
     </main>
   );
 }
