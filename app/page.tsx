@@ -59,7 +59,10 @@ export default function Home() {
   const requestAuthorization = () => {
     const state = generateRandomString(16);
     localStorage.setItem("stateKey", state);
-    let scope = "user-read-private user-read-email";
+    let scope =
+      "streaming \
+               user-read-email \
+               user-read-private";
 
     let url = "https://accounts.spotify.com/authorize";
     url += "?response_type=token";
